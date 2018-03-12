@@ -1,4 +1,5 @@
-branch = node[:deploy][app_name]
+require 'chef/log'
+Chef::Log.level = :debug
 
 script "set_release" do
   interpreter "bash"
