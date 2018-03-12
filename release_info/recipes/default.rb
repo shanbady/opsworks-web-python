@@ -1,13 +1,12 @@
 require 'chef/log'
 Chef::Log.level = :debug
-revision = node[:deploy][:mc][:scm][:revision]
+revision = node["deploy"]["mc"]["scm"]["revision"]
 script "set_release" do
   interpreter "bash"
-  user "root"
-  cwd "/tmp"
+  user "deploy"
+  cwd "/srv/www/mc/current"
   code <<-EOH
     export DEPLOY_TARGET=#{revision}
-    echo "test"
-    echo $DEPLOY_TARGET >> /home/deploy/latest_release
+    make deploy IMAGE_TAG=$DEPLOY_TARGET
   EOH
 end
