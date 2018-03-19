@@ -12,7 +12,7 @@ script "set_release" do
     if [ -z "$IMPACT_ENVIRONMENT" ]; then 
     	echo "IMPACT_ENVIRONMENT not set. deploy skipped";
     else
-        make deploy IMAGE_TAG=$DEPLOY_TARGET;
+        make impact-deploy IMAGE_TAG=$DEPLOY_TARGET;
      fi
   EOH
 end
