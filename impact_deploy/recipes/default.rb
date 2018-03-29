@@ -23,7 +23,8 @@ script "set_release" do
         virtualenv --no-site-packages .venv && source .venv/bin/activate
         pip install pyOpenSSL pyasn1
         pip install --upgrade ndg-httpsclient
-        pip install urllib3[secure]
+        pip install urllib3[secure] requests[security]
+        pip install --upgrade pip
         pip install --upgrade setuptools
         pip install ecs-deploy
         ecs deploy --ignore-warnings $IMPACT_ENVIRONMENT impact --image web $DOCKER_REGISTRY/impact-api:$DEPLOY_TARGET --image redis $DOCKER_REGISTRY/redis:$DEPLOY_TARGET --access-key-id $ECS_ACCESS_KEY_ID --secret-access-key $ECS_SECRET_ACCESS_KEY 2>/dev/null
