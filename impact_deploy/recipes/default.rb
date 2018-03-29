@@ -5,6 +5,7 @@ impact_environment = node['deploy']['mc']['environment']['IMPACT_ENVIRONMENT']
 docker_registry = node['deploy']['mc']['environment']['DOCKER_REGISTRY']
 ecs_secret_access_key = node['deploy']['mc']['environment']['ECS_SECRET_ACCESS_KEY']
 ecs_access_key_id = node['deploy']['mc']['environment']['ECS_ACCESS_KEY_ID']
+ecs_default_region = node['deploy']['mc']['environment']['AWS_DEFAULT_REGION']
 script "set_release" do
   interpreter "bash"
   user "deploy"
@@ -14,6 +15,7 @@ script "set_release" do
     export DEPLOY_TARGET=#{revision}
     export IMPACT_ENVIRONMENT=#{impact_environment}
     export DOCKER_REGISTRY=#{docker_registry}
+    export AWS_DEFAULT_REGION=#{ecs_default_region}
     export DOCKER_REGISTRY=#{docker_registry}
     export ECS_SECRET_ACCESS_KEY=#{ecs_secret_access_key}
     export ECS_ACCESS_KEY_ID=#{ecs_access_key_id}
