@@ -20,7 +20,7 @@ script "set_release" do
     if [ -z "$IMPACT_ENVIRONMENT" ]; then 
     	echo "IMPACT_ENVIRONMENT not set. deploy skipped";
     else
-        pip install ecs-deploy
+        sudo pip install ecs-deploy
         ecs deploy --ignore-warnings $IMPACT_ENVIRONMENT impact --image web $DOCKER_REGISTRY/impact-api:$DEPLOY_TARGET --image redis $DOCKER_REGISTRY/redis:$DEPLOY_TARGET --access-key-id $ECS_ACCESS_KEY_ID --secret-access-key $ECS_SECRET_ACCESS_KEY 2>/dev/null
      fi
   EOH
