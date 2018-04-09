@@ -14,7 +14,7 @@ script "set_release" do
   code <<-EOH
     # pin django-accelerator version in Acclerate's deploy
     REQUESTED_REVISION=#{revision}
-    DJANGO_ACCELERATOR_REVISION=`./infer_django_accelerator_revision.sh $REQUESTED_REVISION`
+    export DJANGO_ACCELERATOR_REVISION=`./infer_django_accelerator_revision.sh $REQUESTED_REVISION`
     echo "DJANGO_ACCELERATOR_REVISION: $DJANGO_ACCELERATOR_REVISION"
     sed -i s/\$\{environment:DJANGO_ACCELERATOR_REVISION\}/$DJANGO_ACCELERATOR_REVISION/g cfg/opsworks_base.cfg
     # trigger a deploy of impact-api
