@@ -12,12 +12,6 @@ script "set_release" do
   cwd "/srv/www/mc/current"
   environment node['deploy']['mc']['environment']
   code <<-EOH
-    # pin django-accelerator version in Acclerate's deploy
-    export REQUESTED_REVISION=#{revision}
-    export DJANGO_ACCELERATOR_REVISION=`./infer_django_accelerator_revision.sh $REQUESTED_REVISION`
-    echo "DJANGO_ACCELERATOR_REVISION: $DJANGO_ACCELERATOR_REVISION"
-    sed -i s/\$\{environment:DJANGO_ACCELERATOR_REVISION\}/$DJANGO_ACCELERATOR_REVISION/g cfg/opsworks_base.cfg
-    cp cfg/opsworks_base.cfg /home/deploy/opsworks_base.cfg
     # trigger a deploy of impact-api
     export DEPLOY_TARGET=#{revision}
     export IMPACT_ENVIRONMENT=#{impact_environment}
