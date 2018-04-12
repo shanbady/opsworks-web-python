@@ -13,7 +13,7 @@ script "set_release" do
   environment node['deploy']['mc']['environment']
   code <<-EOH
     # pin django-accelerator version in Acclerate's deploy
-    REQUESTED_REVISION=#{revision}
+    export REQUESTED_REVISION=#{revision}
     export DJANGO_ACCELERATOR_REVISION=`./infer_django_accelerator_revision.sh $REQUESTED_REVISION`
     echo "DJANGO_ACCELERATOR_REVISION: $DJANGO_ACCELERATOR_REVISION"
     sed -i s/\$\{environment:DJANGO_ACCELERATOR_REVISION\}/$DJANGO_ACCELERATOR_REVISION/g cfg/opsworks_base.cfg
