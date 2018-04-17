@@ -91,6 +91,8 @@ define :buildout_configure do
       # We define our commands for bootstrap and buildout, but don't run
       # them until we have a cfg change.
       # Bootstrap
+      env["REQUESTED_REVISION"] = node["deploy"]["mc"]["scm"]["revision"]
+
       execute bootstrap_cmd do
         user deploy[:user]
         group deploy[:group]
