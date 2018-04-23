@@ -20,7 +20,7 @@ script "set_release" do
     else
         virtualenv --no-site-packages .venv && source .venv/bin/activate
         pip install awscli --upgrade --user
-        .venv/local/bin/aws configure --aws_access_key_id $ECS_ACCESS_KEY_ID --aws_secret_access_key $ECS_SECRET_ACCESS_KEY
+        .venv/local/bin/aws configure --aws_access_key_id $ECS_ACCESS_KEY_ID --aws_secret_access_key $ECS_SECRET_ACCESS_KEY --region $AWS_DEFAULT_REGION
         .venv/local/bin/aws s3api get-object --bucket masschallenge-deployment --key secure/ecs-key.pem ~/.ssh/ecs-key.pem
         export ECS_PEM_FILE=~/.ssh/ecs-key.pem
         export CLUSTER=staging
