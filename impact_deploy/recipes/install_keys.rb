@@ -4,7 +4,7 @@ impact_environment = node['deploy']['mc']['environment']['IMPACT_ENVIRONMENT']
 ecs_secret_access_key = node['deploy']['mc']['environment']['ECS_SECRET_ACCESS_KEY']
 ecs_access_key_id = node['deploy']['mc']['environment']['ECS_ACCESS_KEY_ID']
 ecs_default_region = node['deploy']['mc']['environment']['AWS_DEFAULT_REGION']
-script "set_release" do
+script "install_keys" do
   interpreter "bash"
   user "deploy"
   cwd "/srv/www/mc/current"
