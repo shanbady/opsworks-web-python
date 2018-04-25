@@ -11,6 +11,7 @@ script "install_keys" do
   environment node['deploy']['mc']['environment']
   code <<-EOH
     # trigger a deploy of impact-api
+    echo "INSTALLING KEYS"
     export IMPACT_ENVIRONMENT=#{impact_environment}
     export AWS_DEFAULT_REGION=#{ecs_default_region}
     export ECS_SECRET_ACCESS_KEY=#{ecs_secret_access_key}
@@ -18,7 +19,7 @@ script "install_keys" do
     if [ -z "$IMPACT_ENVIRONMENT" ]; then 
     	echo "IMPACT_ENVIRONMENT not set. install keys skipped";
     else
-        echo "INSTALLING KEYS"
+
         virtualenv --no-site-packages .venv && source .venv/bin/activate
         pip install awscli --upgrade --user
         .venv/local/bin/aws configure --aws_access_key_id $ECS_ACCESS_KEY_ID --aws_secret_access_key $ECS_SECRET_ACCESS_KEY --region $AWS_DEFAULT_REGION
