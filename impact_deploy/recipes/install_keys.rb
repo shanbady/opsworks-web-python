@@ -11,7 +11,7 @@ script "install_keys" do
   environment node['deploy']['mc']['environment']
   code <<-EOH
     # trigger a deploy of impact-api
-    echo "INSTALLING KEYS"
+    echo "INSTALLING KEYS" > test.txt
     export IMPACT_ENVIRONMENT=#{impact_environment}
     export AWS_DEFAULT_REGION=#{ecs_default_region}
     export ECS_SECRET_ACCESS_KEY=#{ecs_secret_access_key}
