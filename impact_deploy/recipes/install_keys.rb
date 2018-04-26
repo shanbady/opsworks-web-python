@@ -16,12 +16,13 @@ script "install_keys" do
     export AWS_DEFAULT_REGION=#{ecs_default_region}
     export ECS_SECRET_ACCESS_KEY=#{ecs_secret_access_key}
     export ECS_ACCESS_KEY_ID=#{ecs_access_key_id}
+    export AWS_ACCESS_KEY_ID=#{ecs_access_key_id}
+    export AWS_SECRET_ACCESS_KEY=#{ecs_secret_access_key}
     if [ -z "$IMPACT_ENVIRONMENT" ]; then 
     	echo "IMPACT_ENVIRONMENT not set. install keys skipped";
     else
-
         virtualenv --no-site-packages .venv && source .venv/bin/activate
-        pip install awscli --upgrade --user
+        pip install awscli --upgrade
         .venv/local/bin/aws configure --aws_access_key_id $ECS_ACCESS_KEY_ID --aws_secret_access_key $ECS_SECRET_ACCESS_KEY --region $AWS_DEFAULT_REGION
         .venv/local/bin/aws s3api get-object --bucket masschallenge-deployment --key secure/ecs-key.pem ~/.ssh/ecs-key.pem
         export ECS_PEM_FILE=~/.ssh/ecs-key.pem
