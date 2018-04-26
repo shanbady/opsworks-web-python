@@ -23,14 +23,13 @@ script "install_keys" do
     else
         virtualenv --no-site-packages .venv && source .venv/bin/activate
         pip install awscli --upgrade
-        .venv/local/bin/aws configure --aws_access_key_id $ECS_ACCESS_KEY_ID --aws_secret_access_key $ECS_SECRET_ACCESS_KEY --region $AWS_DEFAULT_REGION
         .venv/local/bin/aws s3api get-object --bucket masschallenge-deployment --key secure/ecs-key.pem ~/.ssh/ecs-key.pem
         export ECS_PEM_FILE=~/.ssh/ecs-key.pem
         export ECS_INSTANCES=`.venv/local/bin/aws ecs list-container-instances --cluster $IMPACT_ENVIRONMENT | grep arn | cut -b 64-99 | xargs`
         export EC2INSTANCES=`.venv/local/bin/aws ecs describe-container-instances --container-instances $ECS_INSTANCES --cluster $IMPACT_ENVIRONMENT --query "containerInstances[].ec2InstanceId" --output text`
         export EC2_INSTANCE_IP=`.venv/local/bin/aws ec2 describe-instances --instance-ids $EC2INSTANCES --query "Reservations[].Instances[].PublicIpAddress" --output text`
         IFS=' ' read  -a users <<< $(aws opsworks --region us-east-1 describe-user-profiles --query "UserProfiles[].SshUsername" --output text)
-        for user in $users; do
+        for user in ${users[@]}; do
               echo $user
               .venv/local/bin/aws iam list-ssh-public-keys --user-name "${user}" --query "SSHPublicKeys[?Status == 'Active'].[SSHPublicKeyId]" --output text | while read KeyId; do
               export SSHKEY=$(.venv/local/bin/aws iam get-ssh-public-key --user-name "${user}" --ssh-public-key-id "$KeyId" --encoding SSH --query "SSHPublicKey.SSHPublicKeyBody" --output text)
