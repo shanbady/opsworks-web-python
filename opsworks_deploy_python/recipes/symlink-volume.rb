@@ -2,7 +2,7 @@ require 'chef/log'
 Chef::Log.level = :debug
 script "mount_volume" do
   interpreter "bash"
-  user "deploy"
+  user "root"
   cwd "/home/deploy"
   environment node['deploy']['mc']['environment']
   code <<-EOH
