@@ -20,4 +20,4 @@ recipe "opsworks_deploy_python", "Install and setup a python application in a vi
 recipe "opsworks_deploy_python::buildout", "Install and setup a buildout based python application"
 recipe "opsworks_deploy_python::django", "Install and setup a django based python application"
 recipe "opsworks_deploy_python::r3-mount-patch", "Patch to mount /mnt filesystems for r3 instances"
-recipe "opsworks_deploy_python::symlink_volume", "create a symlink from our deploy dir to a large volume"
+recipe "opsworks_deploy_python::symlink-volume", "create a symlink from our deploy dir to a large volume"
