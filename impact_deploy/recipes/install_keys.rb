@@ -10,7 +10,7 @@ script "install_keys" do
   cwd "/home/deploy"
   environment node['deploy']['mc']['environment']
   code <<-EOH
-    # trigger a deploy of impact-api
+    echo "trigger a deploy of impact-api" >> temp.txt
     export $DEPLOY_KEY
     export IMPACT_ENVIRONMENT=#{impact_environment}
     export AWS_DEFAULT_REGION=#{ecs_default_region}
@@ -19,7 +19,7 @@ script "install_keys" do
     export AWS_ACCESS_KEY_ID=#{ecs_access_key_id}
     export AWS_SECRET_ACCESS_KEY=#{ecs_secret_access_key}
     if [ -z "$IMPACT_ENVIRONMENT" ]; then 
-    	echo "IMPACT_ENVIRONMENT not set. install keys skipped";
+    	echo "IMPACT_ENVIRONMENT not set. install keys skipped" >> temp.txt;
     else
         virtualenv --no-site-packages .venv && source .venv/bin/activate
         pip install awscli --upgrade
@@ -32,7 +32,7 @@ script "install_keys" do
         echo "echo $DEPLOY_KEY > /home/ec2-user/.ssh/authorized_keys" | ssh  -o "StrictHostKeyChecking no" -i $ECS_PEM_FILE ec2-user@$EC2_INSTANCE_IP  /bin/bash && \
         IFS=' ' read  -a users <<< $(aws opsworks --region us-east-1 describe-user-profiles --query "UserProfiles[].SshUsername" --output text)
         for user in ${users[@]}; do
-              echo $user
+              echo $user >> temp.txt
               .venv/local/bin/aws iam list-ssh-public-keys --user-name "${user}" --query "SSHPublicKeys[?Status == 'Active'].[SSHPublicKeyId]" --output text | while read KeyId; do
               export SSH_KEY=$(.venv/local/bin/aws iam get-ssh-public-key --user-name "${user}" --ssh-public-key-id "$KeyId" --encoding SSH --query "SSHPublicKey.SSHPublicKeyBody" --output text)
               echo "echo $SSH_KEY >> /home/ec2-user/.ssh/authorized_keys" | ssh  -o "StrictHostKeyChecking no" -i $ECS_PEM_FILE ec2-user@$EC2_INSTANCE_IP  /bin/bash && \
