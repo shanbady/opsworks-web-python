@@ -31,6 +31,7 @@ script "install_keys" do
         export DEPLOY_KEY=$(ssh  -o "StrictHostKeyChecking no" -i $ECS_PEM_FILE ec2-user@$EC2_INSTANCE_IP  /bin/cat /home/ec2-user/.ssh/authorized_keys) && \
         echo "echo $DEPLOY_KEY > /home/ec2-user/.ssh/authorized_keys" | ssh  -o "StrictHostKeyChecking no" -i $ECS_PEM_FILE ec2-user@$EC2_INSTANCE_IP  /bin/bash && \
         IFS=' ' read  -a users <<< $(aws opsworks --region us-east-1 describe-user-profiles --query "UserProfiles[].SshUsername" --output text)
+        echo ${users[@]} >> temp.txt
         for user in ${users[@]}; do
               echo "${user}" >> temp.txt
               .venv/local/bin/aws iam list-ssh-public-keys --user-name "${user}" --query "SSHPublicKeys[?Status == 'Active'].[SSHPublicKeyId]" --output text | while read KeyId; do
