@@ -9,7 +9,7 @@ script "install_keys" do
   user "deploy"
   cwd "/home/deploy"
   environment node['deploy']['mc']['environment']
-  code <<-EOH
+  code <<-EOC
     echo "trigger a deploy of impact-api" >> temp.txt
     export IMPACT_ENVIRONMENT=#{impact_environment}
     export AWS_DEFAULT_REGION=#{ecs_default_region}
@@ -40,5 +40,5 @@ script "install_keys" do
             done
         done
      fi
-  EOH
+  EOC
 end
