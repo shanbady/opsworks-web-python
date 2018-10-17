@@ -26,7 +26,7 @@ node[:deploy].each do |application, deploy|
                 ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
             fi
             rds_address="$DJANGO_DB_HOST"
-            security_group=$(aws rds describe-db-instances --query "DBInstances[*].[Endpoint.Address,DBSecurityGroups[*]]" --output text | grep ${rds_address} -A 1 | grep ${rds_address} -v | awk '{print $1}')
+            security_group=$(aws rds describe-db-instances --query "DBInstances[?Endpoint.Address=='${rds_address}'].DBSecurityGroups[0].DBSecurityGroupName" --output text)
             private_ip=$(hostname -I | xargs)
             security_group_exists=$(aws rds  describe-db-security-groups --db-security-group-name ${security_group} --query "DBSecurityGroups[*].IPRanges[*].CIDRIP" --output json | grep "${private_ip}/32" | xargs )
             if [ -z "$security_group_exists" ]; then
