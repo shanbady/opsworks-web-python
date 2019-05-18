@@ -54,6 +54,7 @@ define :python_base_setup do
       package "#{py_command}-venv" do
         action :install
       end
+      package "python3-pip"
       python_pip "setuptools" do
         version "41.0.1"
       end
@@ -79,6 +80,7 @@ define :python_base_setup do
     # fail on some python versions
     if py_version.to_f >= 3.4
       node.override['python']['virtualenv_location'] = "/usr/bin/virtualenv"
+      node.override['python']['pip_location'] = "/usr/bin/pip3"
     else
       pip = "pip"
       pip_ver = pip_ver_map[py_version]

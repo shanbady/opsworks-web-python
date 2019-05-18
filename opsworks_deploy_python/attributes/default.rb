@@ -8,4 +8,4 @@ node.default["deploy_python"]["purge_before_symlink"] = []
 node.default["deploy_python"]["create_dirs_before_symlink"] = ['public', 'tmp']
 node.default["deploy_python"]["packages"] = ['future']
 node.default["deploy_python"]["os_packages"] = []
-node.default["deploy_python"]["venv_options"] = '--no-site-packages'
+node.default["deploy_python"]["venv_options"] = '--no-site-packages --python=python3.6'
