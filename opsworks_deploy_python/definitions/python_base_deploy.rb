@@ -58,7 +58,6 @@ define :python_base_setup do
       python_pip "setuptools" do
         version "41.0.1"
       end
-      python_pip "future"
     else
       package "#{py_command}-dev"
       package "#{py_command}-setuptools" do
