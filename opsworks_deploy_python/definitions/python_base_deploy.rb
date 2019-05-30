@@ -59,11 +59,15 @@ define :python_base_setup do
         version "41.0.1"
       end
     else
-      package "#{py_command}-dev"
       package "#{py_command}-setuptools" do
         action :install
         ignore_failure true  # This one doesn't always exist
       end
+    end
+    
+    package "#{py_command}-dev" do
+      action :install
+      ignore_failure true  # This one doesn't always exist
     end
 
     package "#{py_command}-distribute-deadsnakes" do
