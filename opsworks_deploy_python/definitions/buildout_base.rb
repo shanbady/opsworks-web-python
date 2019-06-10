@@ -102,6 +102,13 @@ define :buildout_configure do
         action :nothing
       end
 
+      # installing future directly on ubuntu to allow future be loaded by uwsgi
+      # when adding accelerate to the python path
+      python_pip "future" do
+        user "root"
+        group "root"
+      end
+
       # Buildout run
       execute build_cmd do
         user deploy[:user]
