@@ -50,32 +50,41 @@ define :python_base_setup do
     end
 
     if py_version.to_f >= 3.4
-      package "#{py_command}"
+      package "#{py_command}" do
+        action :install
+        options '--force-yes'
+      end
       package "#{py_command}-venv" do
         action :install
+        options '--force-yes'
       end
-      package "python3-pip"
+      package "python3-pip" do
+        action :install
+        options '--force-yes'
+      end
       python_pip "setuptools" do
         version "41.0.1"
       end
     else
       package "#{py_command}-setuptools" do
         action :install
+        options '--force-yes'
         ignore_failure true  # This one doesn't always exist
       end
     end
     
     package "#{py_command}-dev" do
       action :install
+      options '--force-yes'
       ignore_failure true  # This one doesn't always exist
     end
 
     package "#{py_command}-distribute-deadsnakes" do
       action :install
+      options '--force-yes'
       ignore_failure true  # This one doesn't always exist
     end
-    # only set the python binary for this chef run, once the venv is
-    # established we don't want to keep this around
+
     if py_version.to_f >= 3.4
       node.force_override['python']['binary'] = "/usr/bin/#{py_command}"
     end
