@@ -25,7 +25,7 @@ define :python_base_setup do
   node.override['python']['virtualenv_location'] = "/usr/local/bin/virtualenv"
   include_recipe "python::default"
 
-  py_version = deploy["python_major_version"]
+  py_version = node["deploy"]["mc"]["python_major_version"]
   use_custom_py = py_version && py_version != "2.7"
   pip_ver_map = {
     "2.4" => "1.1",
@@ -38,7 +38,7 @@ define :python_base_setup do
     "2.6" => "1.11.4"
   }
   if use_custom_py
-    # We need to install an older python
+    # We need to install a python other than 2.7
     py_command = "python#{py_version}"
     apt_repository 'deadsnakes' do
       uri 'http://ppa.launchpad.net/fkrull/deadsnakes/ubuntu'
@@ -48,29 +48,63 @@ define :python_base_setup do
       key "DB82666C"
       action :add
     end
-    package "#{py_command}-dev"
-    package "#{py_command}-setuptools" do
+
+    if py_version.to_f >= 3.4
+      package "#{py_command}" do
+        action :install
+        options '--force-yes'
+      end
+      package "#{py_command}-venv" do
+        action :install
+        options '--force-yes'
+      end
+      package "python3-pip" do
+        action :install
+        options '--force-yes'
+      end
+      python_pip "setuptools" do
+        version "41.0.1"
+      end
+    else
+      package "#{py_command}-setuptools" do
+        action :install
+        options '--force-yes'
+        ignore_failure true  # This one doesn't always exist
+      end
+    end
+    
+    package "#{py_command}-dev" do
       action :install
+      options '--force-yes'
       ignore_failure true  # This one doesn't always exist
     end
+
     package "#{py_command}-distribute-deadsnakes" do
       action :install
+      options '--force-yes'
       ignore_failure true  # This one doesn't always exist
     end
-    # only set the python binary for this chef run, once the venv is
-    # established we don't want to keep this around
-    node.force_override['python']['binary'] = "/usr/bin/#{py_command}"
+
+    if py_version.to_f >= 3.4
+      node.force_override['python']['binary'] = "/usr/bin/#{py_command}"
+    end
+
     # We use easy install to install pip, because get-pip.py seems to
     # fail on some python versions
-    pip = "pip"
-    pip_ver = pip_ver_map[py_version]
-    pip << "==#{pip_ver}" if pip_ver
-    venv = "virtualenv"
-    venv_ver = virtualenv_ver_map[py_version]
-    venv << "==#{venv_ver}" if venv_ver
-    execute "/usr/bin/easy_install-#{py_version} #{pip} #{venv}"
-    node.override['python']['pip_location'] = "/usr/bin/pip#{py_version}"
-    node.override['python']['virtualenv_location'] = "/usr/bin/virtualenv-#{py_version}"
+    if py_version.to_f >= 3.4
+      node.override['python']['virtualenv_location'] = "/usr/bin/virtualenv"
+      node.override['python']['pip_location'] = "/usr/bin/pip3"
+    else
+      pip = "pip"
+      pip_ver = pip_ver_map[py_version]
+      pip << "==#{pip_ver}" if pip_ver
+      venv = "virtualenv"
+      venv_ver = virtualenv_ver_map[py_version]
+      venv << "==#{venv_ver}" if venv_ver
+      execute "/usr/bin/easy_install-#{py_version} #{pip} #{venv}"
+      node.override['python']['pip_location'] = "/usr/bin/pip#{py_version}"
+      node.override['python']['virtualenv_location'] = "/usr/bin/virtualenv-#{py_version}"
+    end
   end
   
   if !use_custom_py
