@@ -62,6 +62,10 @@ define :python_base_setup do
         action :install
         options '--force-yes'
       end
+      package "python3-venv" do
+        action :install
+        options '--force-yes'
+      end
       python_pip "setuptools" do
         version "41.0.1"
       end
