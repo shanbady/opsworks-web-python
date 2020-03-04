@@ -6,6 +6,6 @@ script "set_permissions" do
   cwd "/home/deploy"
   code <<-EOC
     echo "set permissions for logging"
-    sudo find /var/lib/aws/opsworks/chef/ -name "*.log" | xargs sudo chmod 555
+    sudo find /var/lib/aws/opsworks/chef/ -name "*.log" | xargs sudo chmod 644
   EOC
 end
