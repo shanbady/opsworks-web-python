@@ -21,7 +21,7 @@ script "install_keys" do
     	echo "IMPACT_ENVIRONMENT not set. install keys skipped"
     else
         echo "trying to install keys"
-        virtualenv .venv && source .venv/bin/activate
+        virtualenv --no-site-packages .venv && source .venv/bin/activate
         pip install awscli --upgrade
         .venv/local/bin/aws s3api get-object --bucket masschallenge-deployment --key secure/ecs-key.pem ~/.ssh/ecs-key.pem
         export ECS_PEM_FILE=~/.ssh/ecs-key.pem
