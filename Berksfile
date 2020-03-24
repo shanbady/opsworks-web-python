@@ -1,3 +1,4 @@
+cookbook "python", path: "./python"
 source 'https://supermarket.getchef.com'
 # source 'http://cookbooks.opscode.com/api/v1/cookbooks'
 # source 'https://api.berkshelf.com'
@@ -23,7 +24,6 @@ cookbook 'ulimit', '0.3.2'
 cookbook 'nfs', '1.0.0'
 cookbook 'line', '~> 0.5.1'
 cookbook 'postfix', '3.1.8'
-cookbook "python", path: "./python"
 cookbook 'runit', '1.5.10'
 cookbook 'rsyslog', '1.12.2'
 cookbook 'newrelic', '2.3.0'
