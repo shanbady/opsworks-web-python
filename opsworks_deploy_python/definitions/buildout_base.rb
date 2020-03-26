@@ -52,7 +52,7 @@ define :buildout_configure do
   if deploy[:deploy_to] && (node[:deploy][application]["initially_deployed"] || ::File.exist?(deploy[:deploy_to]))
     release_path = ::File.join(deploy[:deploy_to], 'current')
     config_file = Helpers.buildout_setting(deploy,'config', node)
-    bootstrap_cmd = "#{::File.join(deploy[:deploy_to], 'shared', 'env', 'bin', 'python')} #{::File.join('.', 'bootstrap.py')} -c #{config_file}"
+    bootstrap_cmd = "#{::File.join(deploy[:deploy_to], 'shared', 'env', 'bin', 'python')} #{::File.join('.', 'bootstrap.py')} --version=2.13.2 -c #{config_file}"
     buildout_cmd = ::File.join(release_path, "bin", "buildout")
     build_cmd = "#{buildout_cmd} -c #{config_file} #{Helpers.buildout_setting(deploy, 'flags', node)}"
     buildout_version = Helpers.buildout_setting(deploy,'buildout_version', node)

@@ -89,6 +89,11 @@ define :python_base_setup do
       node.force_override['python']['binary'] = "/usr/bin/#{py_command}"
     end
 
+    python_pip "virtualenv" do
+      version "16.6.1"
+      action :install
+    end
+
     # We use easy install to install pip, because get-pip.py seems to
     # fail on some python versions
     if py_version.to_f >= 3.4
