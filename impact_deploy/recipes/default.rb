@@ -9,11 +9,13 @@ ecs_access_key_id = node['deploy']['mc']['environment']['ECS_ACCESS_KEY_ID']
 ecs_default_region = node['deploy']['mc']['environment']['AWS_DEFAULT_REGION']
 script "set_release" do
   interpreter "bash"
-  user "deploy"
+  user "root"
   cwd "/home/deploy"
   environment node['deploy']['mc']['environment']
   code <<-EOH
     # trigger a deploy of impact-api
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
     export DEPLOY_TARGET=#{revision}
     export IMPACT_ENVIRONMENT=#{impact_environment}
     export IMPACT_SERVICE=#{impact_service}
