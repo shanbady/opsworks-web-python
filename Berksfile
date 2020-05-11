@@ -28,6 +28,7 @@ cookbook 'runit', '1.5.10'
 cookbook 'rsyslog', '1.12.2'
 cookbook 'newrelic', '2.3.0'
 cookbook 'newrelic_plugins', '1.1.0'
+cookbook 'alternatives', github: 'vkhatri/chef-alternatives',  tag: "v0.2.0"
 
 # Uncomment the items below for testing deployments with Vagrant
 
