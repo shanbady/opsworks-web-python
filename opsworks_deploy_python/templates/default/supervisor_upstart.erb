@@ -8,7 +8,7 @@ setuid <%= @user %>
 setgid <%= @group %>
 <% if @environment %>
 <% @environment.each do |key,val| %>
-<% if key.match(/\s/) %>
+<% if val.match(/\s/) %>
 env <%= key %>=<%= "\"#{val}\"" %>
 <% else %>
 env <%= key %>=<%= val %>
